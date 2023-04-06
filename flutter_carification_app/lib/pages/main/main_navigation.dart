@@ -25,11 +25,9 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
       ],
       builder: (context, child) {
         final tabsRouter = AutoTabsRouter.of(context);
-        return Scaffold(
-          body: PageTemplate(
-            body: child,
-            bottomNavigationBar: _bottomNavigationBar(tabsRouter),
-          )
+        return PageTemplate(
+          body: child,
+          bottomNavigationBar: _bottomNavigationBar(tabsRouter),
         );
       },
     );
