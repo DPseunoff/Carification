@@ -31,4 +31,18 @@ abstract class AppTextStyles {
         fontWeight: fontWeight,
         color: color,
       );
+
+  static TextStyle appBar({
+    double fontSize = 20,
+    double height = 24,
+    FontWeight fontWeight = FontWeight.w700,
+    Color color = AppColors.white,
+  }) =>
+      TextStyle(
+        fontFamily: _fontFamily,
+        fontSize: fontSize,
+        height: height / fontSize,
+        fontWeight: fontWeight,
+        color: color,
+      );
 }
