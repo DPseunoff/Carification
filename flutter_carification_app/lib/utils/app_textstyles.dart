@@ -45,4 +45,18 @@ abstract class AppTextStyles {
         fontWeight: fontWeight,
         color: color,
       );
+
+  static TextStyle button({
+    double fontSize = 20,
+    double height = 22,
+    FontWeight fontWeight = FontWeight.w400,
+    Color color = AppColors.white,
+  }) =>
+      TextStyle(
+        fontFamily: _fontFamily,
+        fontSize: fontSize,
+        height: height / fontSize,
+        fontWeight: fontWeight,
+        color: color,
+      );
 }

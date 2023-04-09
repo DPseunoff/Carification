@@ -8,14 +8,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../utils/app_colors.dart';
 
 @RoutePage()
-class MainNavigationPage extends StatefulWidget {
-  const MainNavigationPage({Key? key}) : super(key: key);
+class HomeNavigationPage extends StatefulWidget {
+  const HomeNavigationPage({Key? key}) : super(key: key);
 
   @override
-  State<MainNavigationPage> createState() => _MainNavigationPageState();
+  State<HomeNavigationPage> createState() => _HomeNavigationPageState();
 }
 
-class _MainNavigationPageState extends State<MainNavigationPage> {
+class _HomeNavigationPageState extends State<HomeNavigationPage> {
   @override
   Widget build(BuildContext context) {
     return AutoTabsRouter(

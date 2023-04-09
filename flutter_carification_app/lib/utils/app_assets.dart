@@ -22,4 +22,5 @@ class AppAssets {
   static const cameraButtonIcon = '$_baseIcon/camera_button_icon$_svg';
   static const heartEnabledIcon = '$_baseIcon/heart_enabled_icon$_svg';
   static const heartDisabledIcon = '$_baseIcon/heart_disabled_icon$_svg';
+  static const imageIcon = '$_baseIcon/image_icon$_svg';
 }

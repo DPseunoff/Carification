@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_carification_app/navigation/app_router.dart';
+import 'package:get/get.dart';
 
-void main() {
+import 'pages/camera/image_controller.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Get.put(ImageController());
   runApp(MyApp());
 }
 

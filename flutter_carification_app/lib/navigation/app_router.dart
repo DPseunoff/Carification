@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_carification_app/navigation/app_router.gr.dart';
+import 'package:flutter_carification_app/pages/camera/image_preview_page.dart';
 
 @AutoRouterConfig(replaceInRouteName: 'Page,Route')
 class AppRouter extends $AppRouter {
@@ -7,7 +8,7 @@ class AppRouter extends $AppRouter {
   final List<AutoRoute> routes = [
     AutoRoute(
       path: '/',
-      page: MainNavigationRoute.page,
+      page: HomeNavigationRoute.page,
       children: [
         AutoRoute(
           path: 'main',
@@ -23,5 +24,9 @@ class AppRouter extends $AppRouter {
       path: '/info',
       page: InfoRoute.page,
     ),
+    AutoRoute(
+      path: '/image',
+      page: ImagePreviewRoute.page,
+    )
   ];
 }
