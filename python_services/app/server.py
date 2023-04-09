@@ -1,18 +1,15 @@
-import asyncio
-from io import BytesIO
-
 import aiohttp
+import asyncio
 import uvicorn
-from fastai.learner import *
+from fastai import *
 from fastai.vision import *
-from fastai.vision.all import *
+from io import BytesIO
 from starlette.applications import Starlette
 from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import HTMLResponse, JSONResponse
 from starlette.staticfiles import StaticFiles
-from pathlib import Path
 
-export_file_url = 'https://drive.google.com/uc?export=download&id=1ajeuKbF5jN-4z0X_4Z7rg2CyyjvczJmi'
+export_file_url = 'https://www.dropbox.com/s/t5l25hk59nfzol1/224_resnet50_unfreeze_da_dlrs_lra_mult.pkl?dl=1'
 export_file_name = '224_resnet50_unfreeze_da_dlrs_lra_mult.pkl'
 classes = ['AM',
            'Acura',
@@ -68,7 +65,7 @@ path = Path(__file__).parent
 
 app = Starlette()
 app.add_middleware(CORSMiddleware, allow_origins=['*'], allow_headers=['X-Requested-With', 'Content-Type'])
-#app.mount('/static', StaticFiles(directory='app/static'))
+app.mount('/static', StaticFiles(directory='app/static'))
 
 
 async def download_file(url, dest):
@@ -79,10 +76,11 @@ async def download_file(url, dest):
             with open(dest, 'wb') as f:
                 f.write(data)
 
-#     await download_file(export_file_url, path / export_file_name)
+
 async def setup_learner():
+    await download_file(export_file_url, path / export_file_name)
     try:
-        learn = load_learner("app/224_resnet50_unfreeze_da_dlrs_lra_mult.pkl")
+        learn = load_learner(path, export_file_name)
         return learn
     except RuntimeError as e:
         if len(e.args) > 0 and 'CPU-only machine' in e.args[0]:
