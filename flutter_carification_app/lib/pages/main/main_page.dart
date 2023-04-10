@@ -1,10 +1,15 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:carousel_indicator/carousel_indicator.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_carification_app/common/image_modal.dart';
 import 'package:flutter_carification_app/common/page_template.dart';
 import 'package:flutter_carification_app/navigation/app_router.gr.dart';
 import 'package:flutter_carification_app/pages/camera/image_controller.dart';
+import 'package:flutter_carification_app/pages/gallery/gallery_controller.dart';
+import 'package:flutter_carification_app/pages/main/ui/prediction_carousel.dart';
 import 'package:flutter_carification_app/utils/app_assets.dart';
+import 'package:flutter_carification_app/utils/constants.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
@@ -20,6 +25,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   final _imageController = Get.find<ImageController>();
+  final _galleryController = Get.find<GalleryController>();
 
   @override
   Widget build(BuildContext context) {
@@ -32,19 +38,53 @@ class _MainPageState extends State<MainPage> {
       body: Positioned.fill(
         child: Column(
           children: [
-            const Spacer(),
+            const SizedBox(height: topAppbarPadding + 32),
+            Obx(() {
+                final items = _galleryController.lastPredictions.values.toList();
+                if (items.isNotEmpty) {
+                  return Expanded(
+                    flex: 467,
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: PredictionsCarousel(
+                            items: items.reversed.toList(),
+                            likeCallback: _galleryController.onLikeTap,
+                            slideCallback: _galleryController.onSlide,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        CarouselIndicator(
+                          height: 4,
+                          count: 3,
+                          color: AppColors.grey,
+                          activeColor: AppColors.additional1,
+                          index: _galleryController.predictionsIndex.value,
+                        ),
+                      ],
+                    ),
+                  );
+                } else {
+                  return const Spacer();
+                }
+              },
+            ),
+            const Spacer(flex: 82),
             _cameraButton(
-              onTap: () => ImageModal().show(
-                context,
-                cameraCallback: () => _modalCallback(
-                  context,
-                  type: ImagePickerType.camera,
-                ),
-                galleryCallback: () => _modalCallback(
-                  context,
-                  type: ImagePickerType.gallery,
-                ),
-              ),
+              onTap: () =>
+                  ImageModal().show(
+                    context,
+                    cameraCallback: () =>
+                        _modalCallback(
+                          context,
+                          type: ImagePickerType.camera,
+                        ),
+                    galleryCallback: () =>
+                        _modalCallback(
+                          context,
+                          type: ImagePickerType.gallery,
+                        ),
+                  ),
             ),
             const SizedBox(height: 73),
           ],
@@ -83,7 +123,7 @@ class _MainPageState extends State<MainPage> {
         ),
         child: Center(
           child: Obx(
-            () {
+                () {
               if (_imageController.isTakingPicture.value) {
                 return const CircularProgressIndicator(color: AppColors.white);
               } else {

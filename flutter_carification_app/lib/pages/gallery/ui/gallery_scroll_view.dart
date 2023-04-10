@@ -26,9 +26,11 @@ class _GalleryScrollViewState extends State<GalleryScrollView> {
         controller: _scrollController,
         slivers: [
           SliverPadding(
-            padding: EdgeInsets.symmetric(
-              horizontal: 15,
-              vertical: widget.upperPadding,
+            padding: EdgeInsets.only(
+              left: 15,
+              right: 15,
+              top: widget.upperPadding,
+              bottom: 173,
             ),
             sliver: SliverGrid.count(
               mainAxisSpacing: 10,

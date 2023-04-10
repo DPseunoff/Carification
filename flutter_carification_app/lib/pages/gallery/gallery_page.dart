@@ -6,6 +6,8 @@ import 'package:flutter_carification_app/pages/gallery/ui/gallery_scroll_view.da
 import 'package:flutter_carification_app/utils/constants.dart';
 import 'package:get/get.dart';
 
+import '../../utils/app_colors.dart';
+
 @RoutePage()
 class GalleryPage extends StatefulWidget {
   const GalleryPage({Key? key}) : super(key: key);
@@ -22,18 +24,43 @@ class _GalleryPageState extends State<GalleryPage> {
     return PageTemplate(
       appBarTitle: 'Gallery',
       body: Obx(
-        () => Positioned.fill(
-          child: SafeArea(
-            child: Column(
-              children: [
-                const SizedBox(height: topAppbarPadding),
-                GalleryScrollView(
-                  items: _galleryController.gallery.values.toList(),
-                  upperPadding: 10,
+        () => Stack(
+          children: [
+            Positioned.fill(
+              child: SafeArea(
+                child: Column(
+                  children: [
+                    const SizedBox(height: topAppbarPadding),
+                    GalleryScrollView(
+                      items: _galleryController.gallery.values
+                          .toList()
+                          .reversed
+                          .toList(),
+                      upperPadding: 10,
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
+            Positioned.fill(
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  height: 173,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        AppColors.white.withOpacity(0),
+                        AppColors.white,
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
