@@ -6,9 +6,6 @@ import 'package:flutter_carification_app/common/page_template.dart';
 import 'package:flutter_carification_app/pages/camera/image_controller.dart';
 import 'package:get/get.dart';
 
-import '../../utils/app_colors.dart';
-import '../../utils/app_textstyles.dart';
-
 @RoutePage()
 class ImagePreviewPage extends StatefulWidget {
   const ImagePreviewPage({Key? key}) : super(key: key);

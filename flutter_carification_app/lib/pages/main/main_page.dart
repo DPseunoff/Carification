@@ -1,13 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_carification_app/common/button.dart';
 import 'package:flutter_carification_app/common/image_modal.dart';
 import 'package:flutter_carification_app/common/page_template.dart';
 import 'package:flutter_carification_app/navigation/app_router.gr.dart';
 import 'package:flutter_carification_app/pages/camera/image_controller.dart';
-import 'package:flutter_carification_app/pages/camera/image_preview_page.dart';
 import 'package:flutter_carification_app/utils/app_assets.dart';
-import 'package:flutter_carification_app/utils/app_textstyles.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 

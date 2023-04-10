@@ -45,8 +45,11 @@ class _HomeNavigationPageState extends State<HomeNavigationPage> {
               onTap: () => tabsRouter.setActiveIndex(0),
               child: SvgPicture.asset(
                 AppAssets.mainIcon,
-                color: AppColors.primary.withOpacity(
-                  tabsRouter.activeIndex == 0 ? 1 : 0.5,
+                colorFilter: ColorFilter.mode(
+                  AppColors.primary.withOpacity(
+                    tabsRouter.activeIndex == 0 ? 1 : 0.5,
+                  ),
+                  BlendMode.srcIn,
                 ),
               ),
             ),
@@ -55,8 +58,11 @@ class _HomeNavigationPageState extends State<HomeNavigationPage> {
               onTap: () => tabsRouter.setActiveIndex(1),
               child: SvgPicture.asset(
                 AppAssets.galleryIcon,
-                color: AppColors.primary.withOpacity(
-                  tabsRouter.activeIndex == 1 ? 1 : 0.5,
+                colorFilter: ColorFilter.mode(
+                  AppColors.primary.withOpacity(
+                    tabsRouter.activeIndex == 1 ? 1 : 0.5,
+                  ),
+                  BlendMode.srcIn,
                 ),
               ),
             ),

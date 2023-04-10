@@ -1,6 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_carification_app/navigation/app_router.gr.dart';
-import 'package:flutter_carification_app/pages/camera/image_preview_page.dart';
 
 @AutoRouterConfig(replaceInRouteName: 'Page,Route')
 class AppRouter extends $AppRouter {
