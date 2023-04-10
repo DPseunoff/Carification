@@ -1,10 +1,13 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_carification_app/navigation/app_router.gr.dart';
 import 'package:flutter_carification_app/pages/onboarding/onboarding_controller.dart';
 import 'package:flutter_carification_app/pages/onboarding/onboarding_data.dart';
 import 'package:flutter_carification_app/pages/onboarding/ui/onboarding_appbar.dart';
 import 'package:flutter_carification_app/utils/app_textstyles.dart';
 import 'package:get/get.dart';
 
+@RoutePage()
 class OnBoardingPage extends StatefulWidget {
   const OnBoardingPage({Key? key}) : super(key: key);
 
@@ -19,6 +22,10 @@ class _OnBoardingPageState extends State<OnBoardingPage> with OnBoardingData {
   void initState() {
     super.initState();
     _controller = Get.put(OnBoardingController());
+    _controller.notifier.addListener(() {
+      context.router.replaceAll([const HomeNavigationRoute()]);
+      _controller.setSeenOnBoarding();
+    });
   }
 
   @override

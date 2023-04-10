@@ -3,6 +3,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../utils/constants.dart';
 
 class OnBoardingController extends GetxController {
   /// Observables
@@ -11,12 +14,15 @@ class OnBoardingController extends GetxController {
   /// Params
   final _pageAnimationDuration = const Duration(milliseconds: 500);
   final _pageAnimationCurve = Curves.easeInOut;
+  final _valueNotifier = ValueNotifier<bool>(false);
   int _pageIndex = 0;
 
   late PageController pageController;
   late Timer _timer;
 
   int get pageIndex => _pageIndex;
+
+  ValueNotifier<bool> get notifier => _valueNotifier;
 
   @override
   void onInit() {
@@ -38,6 +44,7 @@ class OnBoardingController extends GetxController {
   void _onDisposeControllers() {
     pageController.dispose();
     _timer.cancel();
+    _valueNotifier.dispose();
   }
 
   void _startTimer() {
@@ -47,6 +54,7 @@ class OnBoardingController extends GetxController {
       elapsed.value = min(elapsed.value, 1);
       if (elapsed.value >= 1) {
         if (_pageIndex == 2) {
+          _valueNotifier.value = true;
           _timer.cancel();
         } else if (_pageIndex < 2) {
           elapsed.value = 0;
@@ -69,10 +77,14 @@ class OnBoardingController extends GetxController {
   }
 
   void onPageSlideRight() {
-    pageController.nextPage(
-      duration: _pageAnimationDuration,
-      curve: _pageAnimationCurve,
-    );
+    if (_pageIndex != 2) {
+      pageController.nextPage(
+        duration: _pageAnimationDuration,
+        curve: _pageAnimationCurve,
+      );
+    } else {
+      _valueNotifier.value = true;
+    }
   }
 
   void onPageChanged(int pageIndex) {
@@ -93,5 +105,10 @@ class OnBoardingController extends GetxController {
       );
     }
     return false;
+  }
+
+  Future<void> setSeenOnBoarding() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setBool(seenOnBoardingKey, true);
   }
 }

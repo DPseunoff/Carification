@@ -7,25 +7,35 @@ class AppRouter extends $AppRouter {
   final List<AutoRoute> routes = [
     AutoRoute(
       path: '/',
-      page: HomeNavigationRoute.page,
+      page: InitRoute.page,
       children: [
         AutoRoute(
-          path: 'main',
-          page: MainRoute.page,
+          path: 'onboarding',
+          page: OnBoardingRoute.page,
         ),
         AutoRoute(
-          path: 'gallery',
-          page: GalleryRoute.page,
+          path: 'home',
+          page: HomeNavigationRoute.page,
+          children: [
+            AutoRoute(
+              path: 'main',
+              page: MainRoute.page,
+            ),
+            AutoRoute(
+              path: 'gallery',
+              page: GalleryRoute.page,
+            ),
+          ],
+        ),
+        AutoRoute(
+          path: 'info',
+          page: InfoRoute.page,
+        ),
+        AutoRoute(
+          path: 'image',
+          page: ImagePreviewRoute.page,
         ),
       ],
     ),
-    AutoRoute(
-      path: '/info',
-      page: InfoRoute.page,
-    ),
-    AutoRoute(
-      path: '/image',
-      page: ImagePreviewRoute.page,
-    )
   ];
 }
