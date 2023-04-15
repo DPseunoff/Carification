@@ -27,13 +27,11 @@ class PredictionsCarousel extends StatelessWidget {
             final asset = items[i].imagePath;
             final prediction = items[i].prediction;
             final liked = items[i].liked;
-            return GestureDetector(
-              onTap: () => likeCallback(id),
-              child: PredictionCard(
-                imageAsset: asset,
-                prediction: prediction,
-                liked: liked,
-              ),
+            return PredictionCard(
+              imageAsset: asset,
+              prediction: prediction,
+              liked: liked,
+              onLikeCallback: () => likeCallback(id),
             );
           },
         ),

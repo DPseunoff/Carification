@@ -1,10 +1,10 @@
 import 'dart:io';
-import 'dart:convert';
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter_carification_app/common/error_receiver.dart';
+import 'package:flutter_carification_app/pages/gallery/gallery_controller.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart';
+import 'package:dio/dio.dart' as dio;
 
 enum ImagePickerType { camera, gallery }
 
@@ -13,7 +13,7 @@ class ImageController extends GetxController {
   var imageName = '';
   XFile? _currentImg;
 
-  static const _base = "https://carrification-service.onrender.com";
+  static const _base = "https://carification-service-goskurikhin.amvera.io";
 
   final isTakingPicture = false.obs;
 
@@ -21,6 +21,7 @@ class ImageController extends GetxController {
     required Future Function() onSuccessCallback,
     required ImagePickerType type,
   }) async {
+    final errorReceiver = Get.find<ErrorReceiver>();
     if (isTakingPicture.value) {
       return;
     }
@@ -34,6 +35,7 @@ class ImageController extends GetxController {
       );
       if (file == null) {
         isTakingPicture.value = false;
+        errorReceiver.onError('Image is null');
         return;
       }
       imagePath = file.path;
@@ -42,6 +44,7 @@ class ImageController extends GetxController {
       isTakingPicture.value = false;
       await onSuccessCallback();
     } catch (e) {
+      errorReceiver.onError('Image not picked');
       debugPrint(e.toString());
     }
   }
@@ -60,24 +63,54 @@ class ImageController extends GetxController {
   }
 
   Future<void> upload(XFile imageFile) async {
-    var stream = http.ByteStream(Stream.castFrom(imageFile.openRead()));
-    var length = await imageFile.length();
+    isTakingPicture.value = true;
 
-    var uri = Uri.parse('$_base/analyze');
+    final galleryController = Get.find<GalleryController>();
+    final errorReceiver = Get.find<ErrorReceiver>();
 
-    var request = http.MultipartRequest("POST", uri);
-    var multipartFile = http.MultipartFile(
-      'file',
-      stream,
-      length,
-      filename: basename(imageFile.path),
-    );
+    final dioInstance = dio.Dio();
+    final uri = Uri.parse('$_base/predict_image');
 
-    request.files.add(multipartFile);
-    final response = await request.send();
-    debugPrint(response.statusCode.toString());
-    response.stream.transform(utf8.decoder).listen((value) {
-      debugPrint(value);
+    final formData = dio.FormData.fromMap({
+      'image': await dio.MultipartFile.fromFile(
+        imageFile.path,
+        filename: imageFile.name,
+      ),
     });
+
+    late final dio.Response response;
+    try {
+      response = await dioInstance.post(
+        uri.toString(),
+        data: formData,
+        options: dio.Options(responseType: dio.ResponseType.json),
+      );
+      debugPrint(response.statusCode.toString());
+
+      final prediction = response.data['prediction'];
+
+      debugPrint(prediction);
+
+      await galleryController.onSaveImageToDevice(
+        prediction: prediction,
+        image: imageFile,
+      );
+    } on dio.DioError catch (e) {
+      if (e.response != null) {
+        print(e.response?.data);
+        print(e.response?.headers);
+        print(e.response?.requestOptions);
+        errorReceiver.onError('Dio request error');
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        errorReceiver.onError('Something went wrong');
+        print(e.requestOptions);
+        print(e.message);
+      }
+    } catch (e) {
+      errorReceiver.onError('Unknown type of error');
+    } finally {
+      isTakingPicture.value = false;
+    }
   }
 }

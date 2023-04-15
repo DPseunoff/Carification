@@ -6,16 +6,20 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_textstyles.dart';
 
+typedef OnLikeCallback = void Function();
+
 class PredictionCard extends StatelessWidget {
   const PredictionCard({
     Key? key,
     required this.imageAsset,
     required this.prediction,
     required this.liked,
+    required this.onLikeCallback,
   }) : super(key: key);
   final String imageAsset;
   final String prediction;
   final bool liked;
+  final OnLikeCallback onLikeCallback;
 
   @override
   Widget build(BuildContext context) {
@@ -55,13 +59,17 @@ class PredictionCard extends StatelessWidget {
                     style: AppTextStyles.onBoardingDescription(height: 16),
                   ),
                   const Spacer(),
-                  SvgPicture.asset(
-                    liked
-                        ? AppAssets.heartEnabledIcon
-                        : AppAssets.heartDisabledIcon,
-                    colorFilter: const ColorFilter.mode(
-                      AppColors.grey,
-                      BlendMode.srcIn,
+                  GestureDetector(
+                    onTap: onLikeCallback,
+                    behavior: HitTestBehavior.translucent,
+                    child: SvgPicture.asset(
+                      liked
+                          ? AppAssets.heartEnabledIcon
+                          : AppAssets.heartDisabledIcon,
+                      colorFilter: const ColorFilter.mode(
+                        AppColors.grey,
+                        BlendMode.srcIn,
+                      ),
                     ),
                   ),
                   const SizedBox(width: 6),

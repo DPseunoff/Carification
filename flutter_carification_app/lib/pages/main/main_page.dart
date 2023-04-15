@@ -1,7 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:carousel_indicator/carousel_indicator.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_carification_app/car_data.dart';
+import 'package:flutter_carification_app/common/empty_bar.dart';
 import 'package:flutter_carification_app/common/image_modal.dart';
 import 'package:flutter_carification_app/common/page_template.dart';
 import 'package:flutter_carification_app/navigation/app_router.gr.dart';
@@ -39,57 +40,62 @@ class _MainPageState extends State<MainPage> {
         child: Column(
           children: [
             const SizedBox(height: topAppbarPadding + 32),
-            Obx(() {
-                final items = _galleryController.lastPredictions.values.toList();
-                if (items.isNotEmpty) {
-                  return Expanded(
-                    flex: 467,
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: PredictionsCarousel(
-                            items: items.reversed.toList(),
-                            likeCallback: _galleryController.onLikeTap,
-                            slideCallback: _galleryController.onSlide,
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        CarouselIndicator(
-                          height: 4,
-                          count: 3,
-                          color: AppColors.grey,
-                          activeColor: AppColors.additional1,
-                          index: _galleryController.predictionsIndex.value,
-                        ),
-                      ],
-                    ),
-                  );
-                } else {
-                  return const Spacer();
-                }
-              },
+            Expanded(
+              flex: 467,
+              child: Obx(
+                () {
+                  final items = _galleryController.lastPredictions.values
+                      .toList();
+                  if (items.isNotEmpty) {
+                    return _carouselPreview(items);
+                  } else {
+                    return const EmptyBar(
+                      text: 'Вы еще не загрузили ни одной фотографии',
+                    );
+                  }
+                },
+              ),
             ),
             const Spacer(flex: 82),
             _cameraButton(
-              onTap: () =>
-                  ImageModal().show(
-                    context,
-                    cameraCallback: () =>
-                        _modalCallback(
-                          context,
-                          type: ImagePickerType.camera,
-                        ),
-                    galleryCallback: () =>
-                        _modalCallback(
-                          context,
-                          type: ImagePickerType.gallery,
-                        ),
-                  ),
+              onTap: () => ImageMenus().show(
+                context,
+                cameraCallback: () => _modalCallback(
+                  context,
+                  type: ImagePickerType.camera,
+                ),
+                galleryCallback: () => _modalCallback(
+                  context,
+                  type: ImagePickerType.gallery,
+                ),
+              ),
             ),
             const SizedBox(height: 73),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _carouselPreview(List<CarData> items) {
+    return Column(
+      children: [
+        Expanded(
+          child: PredictionsCarousel(
+            items: items.reversed.toList(),
+            likeCallback: _galleryController.onLikeTap,
+            slideCallback: _galleryController.onSlide,
+          ),
+        ),
+        const SizedBox(height: 16),
+        CarouselIndicator(
+          height: 4,
+          count: _galleryController.lastPredictions.length,
+          color: AppColors.grey,
+          activeColor: AppColors.additional1,
+          index: _galleryController.predictionsIndex.value,
+        ),
+      ],
     );
   }
 
@@ -123,7 +129,7 @@ class _MainPageState extends State<MainPage> {
         ),
         child: Center(
           child: Obx(
-                () {
+            () {
               if (_imageController.isTakingPicture.value) {
                 return const CircularProgressIndicator(color: AppColors.white);
               } else {

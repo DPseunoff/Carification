@@ -31,4 +31,7 @@ class AppAssets {
   static const test2 = '$_baseTest/test_2$_jpg';
   static const test3 = '$_baseTest/test_3$_jpg';
   static const test4 = '$_baseTest/test_4$_jpg';
+
+  /// App icon
+  static const appIcon = '$_baseIcon/app_icon$_svg';
 }

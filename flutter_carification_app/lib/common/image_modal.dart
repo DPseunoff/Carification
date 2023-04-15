@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_carification_app/common/button.dart';
 
 import '../utils/app_colors.dart';
+import '../utils/app_textstyles.dart';
 
 typedef CameraCallback = void Function();
 typedef GalleryCallback = void Function();
 
-class ImageModal {
+class ImageMenus {
   static const _borderRadius = 20.0;
 
   Future<void> show(
@@ -52,5 +53,27 @@ class ImageModal {
       enableDrag: false,
       isDismissible: true,
     );
+  }
+
+  void showSnackBar(BuildContext context, String message) {
+    final snackBar = SnackBar(
+      content: Row(
+        children: [
+          Text(
+            message,
+            style: AppTextStyles.onBoardingDescription(height: 16),
+          )
+        ],
+      ),
+      duration: const Duration(milliseconds: 3000),
+      backgroundColor: AppColors.primary,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+      behavior: SnackBarBehavior.floating,
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8.03 + 77),
+      padding: const EdgeInsets.only(left: 21, top: 16, bottom: 16),
+      elevation: 0,
+    );
+    
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

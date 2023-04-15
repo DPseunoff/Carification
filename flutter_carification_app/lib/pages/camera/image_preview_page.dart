@@ -65,7 +65,10 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
             Expanded(
               child: MainButton(
                 buttonTitle: 'Use photo',
-                onTap: _imageController.onUseTap,
+                onTap: () async {
+                  _imageController.onUseTap();
+                  context.router.pop();
+                }
               ),
             ),
             const SizedBox(width: 17),

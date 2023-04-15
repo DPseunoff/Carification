@@ -1,9 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_carification_app/common/error_receiver.dart';
+import 'package:flutter_carification_app/common/image_modal.dart';
 import 'package:flutter_carification_app/common/page_template.dart';
 import 'package:flutter_carification_app/navigation/app_router.gr.dart';
 import 'package:flutter_carification_app/utils/app_assets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
 import '../../utils/app_colors.dart';
 
@@ -16,6 +19,30 @@ class HomeNavigationPage extends StatefulWidget {
 }
 
 class _HomeNavigationPageState extends State<HomeNavigationPage> {
+  late final ErrorReceiver _errorController;
+
+  @override
+  void initState() {
+    super.initState();
+    _errorController = Get.put(ErrorReceiver());
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _errorController.notifier.addListener(() {
+      if (_errorController.error != null) {
+        ImageMenus().showSnackBar(context, _errorController.errorString());
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _errorController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return AutoTabsRouter(

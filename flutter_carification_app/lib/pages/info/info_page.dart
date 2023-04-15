@@ -22,20 +22,40 @@ class InfoPage extends StatelessWidget {
       body: Positioned.fill(
         child: SafeArea(
           child: Column(
-            mainAxisSize: MainAxisSize.min,
             children: [
               const SizedBox(height: 8.5 + topAppbarPadding),
-              BlurryContainer(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 23,
-                  vertical: 35,
-                ),
-                blur: 10,
-                width: MediaQuery.of(context).size.width - 30,
-                color: Colors.black.withOpacity(0.3),
-                child: Text(
-                  '//nfsfg\nfsdfsd\nsdfgsfdg\nsdfgs\nfsdfsdfdsf\ndf\n\n\nsdfsdfdsfdfg\nsdfgsdfg',
-                  style: AppTextStyles.appBar(),
+              Expanded(
+                child:
+                SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        child: BlurryContainer(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 15,
+                            vertical: 20,
+                          ),
+                          blur: 10,
+                          color: Colors.black.withOpacity(0.3),
+                          child: Text(
+                            'Приложение способно корректно обрабатывать следующие марки автомобилей:\n'
+                            '${getStringFromClasses()}.\n\n'
+                            'К сожалению без АвтоВАЗ и Škoda.\n\n'
+                            'На главном экране есть карусель, в которой всегда показаны последние три загруженные фотографии с предсказанной маркой. '
+                            'Если вам понравилось, как приложение угадало марку, вы можете добавить фотографию в галерею, поставив лайк.\n\n'
+                            'Также на главном экране находится основная кнопка, которая дает выбор: загрузить фотографию из галереи телефона или сделать новую на камеру.\n\n'
+                            'Карточки в галерее можно зажать и удалить, в таком случае фотография с предсказанием удаляется навсегда из галереи и карусели.\n\n'
+                            'Приложение написано в качестве дипломной работы\n'
+                            'Псеунов Д.Р. М8О-405Б-19\nМАИ, 2023',
+                            style: AppTextStyles.onBoardingDescription(),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 100),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -43,5 +63,16 @@ class InfoPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String getStringFromClasses() {
+    var str = '';
+    for (int i = 0; i < classes.length; i++) {
+      str += classes[i];
+      if (i != classes.length - 1) {
+        str += ', ';
+      }
+    }
+    return str;
   }
 }

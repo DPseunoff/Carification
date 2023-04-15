@@ -1,11 +1,13 @@
+import 'dart:io';
 import 'dart:math';
-
-import 'package:carousel_slider/carousel_controller.dart';
+import 'package:camera/camera.dart';
 import 'package:carousel_slider/carousel_options.dart';
+import 'package:flutter_carification_app/common/error_receiver.dart';
 import 'package:flutter_carification_app/common/object_box.dart';
 import 'package:flutter_carification_app/objectbox.g.dart';
 import 'package:flutter_carification_app/pages/gallery/gallery_test_data.dart';
 import 'package:get/get.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../../car_data.dart';
 
@@ -20,7 +22,6 @@ class GalleryController extends GetxController with GalleryTestData {
   final lastPredictions = <int, CarData>{}.obs;
   final gallery = <int, CarData>{}.obs;
   final predictionsIndex = 0.obs;
-
 
   @override
   void onInit() {
@@ -40,8 +41,25 @@ class GalleryController extends GetxController with GalleryTestData {
     final predictionsList =
         predictionsFullList.sublist(0, min(3, predictionsFullList.length));
 
-    lastPredictions.value = {for (var val in predictionsList) val.id: val};
-    gallery.value = {for (var val in galleryList) val.id: val};
+    lastPredictions.value = {for (final val in predictionsList) val.id: val};
+    gallery.value = {for (final val in galleryList) val.id: val};
+  }
+
+  Future<void> onSaveImageToDevice({
+    required String prediction,
+    required XFile image,
+  }) async {
+    final errorReceiver = Get.find<ErrorReceiver>();
+
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      final imagePath = '${directory.path}/${image.name}';
+      await image.saveTo(imagePath);
+      final localImage = File(imagePath);
+      onNewCarAdd(imagePath: localImage.path, prediction: prediction);
+    } catch (e) {
+      errorReceiver.onError('Error while saving image');
+    }
   }
 
   void onNewCarAdd({
@@ -74,5 +92,11 @@ class GalleryController extends GetxController with GalleryTestData {
 
   void onSlide(int i, CarouselPageChangedReason reason) {
     predictionsIndex.value = i;
+  }
+
+  void deleteImage(int i) {
+    _box.remove(i);
+    gallery.remove(i);
+    lastPredictions.remove(i);
   }
 }
