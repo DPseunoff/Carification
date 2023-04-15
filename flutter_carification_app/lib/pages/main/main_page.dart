@@ -85,6 +85,7 @@ class _MainPageState extends State<MainPage> {
             items: items.reversed.toList(),
             likeCallback: _galleryController.onLikeTap,
             slideCallback: _galleryController.onSlide,
+            controller: _galleryController.carouselController,
           ),
         ),
         const SizedBox(height: 16),

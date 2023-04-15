@@ -35,7 +35,6 @@ class ImageController extends GetxController {
       );
       if (file == null) {
         isTakingPicture.value = false;
-        errorReceiver.onError('Image is null');
         return;
       }
       imagePath = file.path;
@@ -44,7 +43,7 @@ class ImageController extends GetxController {
       isTakingPicture.value = false;
       await onSuccessCallback();
     } catch (e) {
-      errorReceiver.onError('Image not picked');
+      errorReceiver.onError('Image pick error');
       debugPrint(e.toString());
     }
   }

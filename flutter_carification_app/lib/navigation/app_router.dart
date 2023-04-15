@@ -35,6 +35,10 @@ class AppRouter extends $AppRouter {
           path: 'image',
           page: ImagePreviewRoute.page,
         ),
+        AutoRoute(
+          path: 'preview',
+          page: GalleryPreview.page,
+        ),
       ],
     ),
   ];

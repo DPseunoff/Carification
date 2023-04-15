@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 import 'package:camera/camera.dart';
+import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:flutter_carification_app/common/error_receiver.dart';
 import 'package:flutter_carification_app/common/object_box.dart';
@@ -22,6 +23,8 @@ class GalleryController extends GetxController with GalleryTestData {
   final lastPredictions = <int, CarData>{}.obs;
   final gallery = <int, CarData>{}.obs;
   final predictionsIndex = 0.obs;
+
+  final carouselController = CarouselController();
 
   @override
   void onInit() {
@@ -75,6 +78,8 @@ class GalleryController extends GetxController with GalleryTestData {
       }
     }
     lastPredictions[car.id] = car;
+    predictionsIndex.value = 0;
+    carouselController.jumpToPage(0);
   }
 
   void onLikeTap(int id) {

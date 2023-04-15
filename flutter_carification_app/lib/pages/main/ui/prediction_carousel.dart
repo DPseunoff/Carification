@@ -9,12 +9,14 @@ class PredictionsCarousel extends StatelessWidget {
     required this.items,
     required this.likeCallback,
     required this.slideCallback,
+    required this.controller,
     Key? key,
   }) : super(key: key);
 
   final List<CarData> items;
   final void Function(int id) likeCallback;
   final void Function(int i, CarouselPageChangedReason reason) slideCallback;
+  final CarouselController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +42,7 @@ class PredictionsCarousel extends StatelessWidget {
         aspectRatio: 1,
         viewportFraction: 0.8,
         initialPage: 0,
-        enableInfiniteScroll: true,
+        enableInfiniteScroll: false,
         reverse: false,
         autoPlay: false,
         autoPlayAnimationDuration: const Duration(milliseconds: 800),
@@ -50,6 +52,7 @@ class PredictionsCarousel extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         onPageChanged: slideCallback,
       ),
+      carouselController: controller,
     );
   }
 }
