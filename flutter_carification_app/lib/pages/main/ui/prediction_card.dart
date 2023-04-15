@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:blurrycontainer/blurrycontainer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_carification_app/utils/app_assets.dart';
@@ -34,7 +36,7 @@ class PredictionCard extends StatelessWidget {
           ),
         ],
         image: DecorationImage(
-          image: AssetImage(imageAsset),
+          image: FileImage(File(imageAsset)),
           fit: BoxFit.cover,
         ),
       ),

@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:auto_route/auto_route.dart';
 import 'package:blurrycontainer/blurrycontainer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -35,9 +38,9 @@ class _GalleryCardState extends State<GalleryCard> {
             'Delete',
             style: AppTextStyles.onBoardingDescription(height: 16, color: Colors.black),
           ),
-          onPressed: () {
-            Navigator.pop(context);
-            Get.find<GalleryController>().deleteImage(widget.id);
+          onPressed: () async {
+            await Get.find<GalleryController>().deleteImage(widget.id);
+            await context.router.pop();
           },
         )
       ],
@@ -59,7 +62,7 @@ class _GalleryCardState extends State<GalleryCard> {
               ),
             ],
             image: DecorationImage(
-              image: AssetImage(widget.imageAsset),
+              image: FileImage(File(widget.imageAsset)),
               fit: BoxFit.cover,
             ),
           ),

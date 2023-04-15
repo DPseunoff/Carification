@@ -27,7 +27,6 @@ class GalleryController extends GetxController with GalleryTestData {
   void onInit() {
     super.onInit();
     _box = objectBox.store.box<CarData>();
-
     /// Init once for testing
     // initTestData(_box);
     // _box.removeAll();
@@ -94,7 +93,7 @@ class GalleryController extends GetxController with GalleryTestData {
     predictionsIndex.value = i;
   }
 
-  void deleteImage(int i) {
+  Future<void> deleteImage(int i) async {
     _box.remove(i);
     gallery.remove(i);
     lastPredictions.remove(i);

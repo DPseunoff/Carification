@@ -13,7 +13,7 @@ class ImageController extends GetxController {
   var imageName = '';
   XFile? _currentImg;
 
-  static const _base = "https://carification-service-goskurikhin.amvera.io";
+  static const _base = "http://carification.hopto.org";
 
   final isTakingPicture = false.obs;
 
@@ -96,16 +96,31 @@ class ImageController extends GetxController {
         image: imageFile,
       );
     } on dio.DioError catch (e) {
-      if (e.response != null) {
-        print(e.response?.data);
-        print(e.response?.headers);
-        print(e.response?.requestOptions);
-        errorReceiver.onError('Dio request error');
-      } else {
-        // Something happened in setting up or sending the request that triggered an Error
-        errorReceiver.onError('Something went wrong');
-        print(e.requestOptions);
-        print(e.message);
+      switch (e.type) {
+        case dio.DioErrorType.connectionTimeout:
+          errorReceiver.onError('Connection timeout');
+          break;
+        case dio.DioErrorType.sendTimeout:
+          errorReceiver.onError('Send timeout');
+          break;
+        case dio.DioErrorType.receiveTimeout:
+          errorReceiver.onError('Receive timeout');
+          break;
+        case dio.DioErrorType.badCertificate:
+          errorReceiver.onError('Bad certificate');
+          break;
+        case dio.DioErrorType.badResponse:
+          errorReceiver.onError('Bad response');
+          break;
+        case dio.DioErrorType.cancel:
+          errorReceiver.onError('Cancel response');
+          break;
+        case dio.DioErrorType.connectionError:
+          errorReceiver.onError('Connection error');
+          break;
+        case dio.DioErrorType.unknown:
+          errorReceiver.onError('Dio unknown type of error');
+          break;
       }
     } catch (e) {
       errorReceiver.onError('Unknown type of error');
