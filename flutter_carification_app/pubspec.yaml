@@ -38,6 +38,18 @@ dev_dependencies:
   build_runner: ^2.3.3
   objectbox_generator: any
   flutter_lints: ^2.0.0
+  flutter_native_splash: ^2.2.19
+
+flutter_native_splash:
+  android: true
+  ios: true
+  web: false
+  color: "#12252E"
+  image: "assets/app_icon.png"
+  android_12:
+    image: assets/app_icon.png
+  fullscreen: true
+
 
 flutter:
 

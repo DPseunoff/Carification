@@ -23,43 +23,38 @@ class _GalleryScrollViewState extends State<GalleryScrollView> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: widget.items.isNotEmpty
-          ? CustomScrollView(
-              controller: _scrollController,
-              slivers: [
-                SliverPadding(
-                  padding: EdgeInsets.only(
-                    left: 15,
-                    right: 15,
-                    top: widget.upperPadding,
-                    bottom: 173,
-                  ),
-                  sliver: SliverGrid.count(
-                    mainAxisSpacing: 10,
-                    crossAxisSpacing: 10,
-                    crossAxisCount: 2,
-                    childAspectRatio: 1.0,
-                    children: [
-                      ...List.generate(widget.items.length, (i) {
-                        final id = widget.items[i].id;
-                        final asset = widget.items[i].imagePath;
-                        final prediction = widget.items[i].prediction;
-                        return GalleryCard(
-                          key: UniqueKey(),
-                          id: id,
-                          imageAsset: asset,
-                          prediction: prediction,
-                        );
-                      }),
-                    ],
-                  ),
-                ),
-              ],
-            )
-          : const Padding(
-              padding: EdgeInsets.only(bottom: 150),
-              child: EmptyBar(text: 'Вы еще не сохранили ни одной фотографии'),
+      child: CustomScrollView(
+        controller: _scrollController,
+        slivers: [
+          SliverPadding(
+            padding: EdgeInsets.only(
+              left: 15,
+              right: 15,
+              top: widget.upperPadding,
+              bottom: 173,
             ),
+            sliver: SliverGrid.count(
+              mainAxisSpacing: 10,
+              crossAxisSpacing: 10,
+              crossAxisCount: 2,
+              childAspectRatio: 1.0,
+              children: [
+                ...List.generate(widget.items.length, (i) {
+                  final id = widget.items[i].id;
+                  final asset = widget.items[i].imagePath;
+                  final prediction = widget.items[i].prediction;
+                  return GalleryCard(
+                    key: UniqueKey(),
+                    id: id,
+                    imageAsset: asset,
+                    prediction: prediction,
+                  );
+                }),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -2,7 +2,7 @@
     package="com.example.flutter_carification_app">
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
-        android:label="flutter_carification_app"
+        android:label="Carification"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true">

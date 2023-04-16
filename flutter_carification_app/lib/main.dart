@@ -4,14 +4,18 @@ import 'package:flutter_carification_app/navigation/app_router.dart';
 import 'package:flutter_carification_app/pages/gallery/gallery_controller.dart';
 import 'package:get/get.dart';
 import 'pages/camera/image_controller.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 late ObjectBox objectBox;
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
   objectBox = await ObjectBox.create();
   Get.put(GalleryController(objectBox: objectBox));
   Get.put(ImageController());
+  FlutterNativeSplash.remove();
   runApp(MyApp());
 }
 
