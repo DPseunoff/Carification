@@ -41,7 +41,7 @@ class InfoPage extends StatelessWidget {
                           color: Colors.black.withOpacity(0.3),
                           child: Text(
                             'Приложение способно корректно обрабатывать следующие марки автомобилей:\n'
-                            '${getStringFromClasses()}.\n\n'
+                            '${classes.join(', ')}.\n\n'
                             'К сожалению без АвтоВАЗ и Škoda.\n\n'
                             'На главном экране есть карусель, в которой всегда показаны последние три загруженные фотографии с предсказанной маркой. '
                             'Если вам понравилось, как приложение угадало марку, вы можете добавить фотографию в галерею, поставив лайк.\n\n'
@@ -63,16 +63,5 @@ class InfoPage extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  String getStringFromClasses() {
-    var str = '';
-    for (int i = 0; i < classes.length; i++) {
-      str += classes[i];
-      if (i != classes.length - 1) {
-        str += ', ';
-      }
-    }
-    return str;
   }
 }
